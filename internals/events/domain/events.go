@@ -1,10 +1,28 @@
 package domain
 
 import (
+	err "errors"
 	"time"
 )
 
 type Rating string
+
+// EVENT
+var (
+	ErrEventNotFound         = err.New("event not found")
+	ErrNameIsRequired        = err.New("name is required")
+	ErrLocationIsRequired    = err.New("location is required")
+	ErrDateIsRequired        = err.New("date is required")
+	ErrRatingIsRequired      = err.New("rating is required")
+	ErrOrganizerIsRequired   = err.New("organizer is required")
+	ErrImageUrlIsRequired    = err.New("image url is required")
+	ErrDescriptionIsRequired = err.New("description is required")
+	ErrDateIsInThePast       = err.New("date must be in the future")
+	ErrCapacityIsZero        = err.New("capacity must be bigger then zero")
+	ErrTicketPriceIsNegative = err.New("ticket price must not be negative")
+	ErrTicketsIsRequired     = err.New("tickets are required")
+	ErrSpotsIsRequired       = err.New("spots are required")
+)
 
 const (
 	RatingL  Rating = "L"
@@ -31,5 +49,10 @@ type Event struct {
 }
 
 func (e *Event) AddSpots(name string) (*Spot, error) {
-	return nil, nil
+	Spot, err := NewSpot(e, name)
+	if err != nil {
+		return nil, err
+	}
+	e.Spots = append(e.Spots, *Spot)
+	return Spot, nil
 }

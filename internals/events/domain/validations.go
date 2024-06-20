@@ -6,7 +6,7 @@ import (
 
 func (s *Spot) Validate() error {
 	if s.Name == "" {
-		return ErrNameIsRequired
+		return ErrSpotNameIsRequired
 	}
 
 	if len(s.Name) < 2 {
@@ -15,7 +15,10 @@ func (s *Spot) Validate() error {
 
 	if s.Name[0] < 'A' || s.Name[0] > 'Z' {
 		return ErrSpotNameMustStartWithALetter
+	}
 
+	if s.Name[len(s.Name)-1] < '0' || s.Name[len(s.Name)-1] > '9' {
+		return ErrSpotNameMustEndWithNumber
 	}
 
 	return nil
